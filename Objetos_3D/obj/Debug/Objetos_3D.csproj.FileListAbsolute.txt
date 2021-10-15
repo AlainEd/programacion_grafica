@@ -1,0 +1,11 @@
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\bin\Debug\Objetos_3D.exe.config
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\bin\Debug\Objetos_3D.exe
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\bin\Debug\Objetos_3D.pdb
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\bin\Debug\OpenTK.dll
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\bin\Debug\OpenTK.pdb
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\bin\Debug\OpenTK.xml
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.csproj.AssemblyReference.cache
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.csproj.CoreCompileInputs.cache
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.csproj.CopyComplete
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.exe
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.pdb
