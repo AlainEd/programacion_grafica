@@ -11,7 +11,7 @@ namespace Objetos_3D
 {
     class Game : GameWindow
     {
-        int arriba = 0, abajo = 0, derecha = 0, izquierda = 0;
+        int arriba = 0, abajo = 1, derecha = 1, izquierda = 0;
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
 
@@ -23,7 +23,7 @@ namespace Objetos_3D
 
             if (input.IsKeyDown(Key.W)) arriba++;
             else if (input.IsKeyDown(Key.S)) abajo += 300;
-            else if (input.IsKeyDown(Key.D)) derecha += 3000;
+            else if (input.IsKeyDown(Key.D)) derecha += 300;
             else if (input.IsKeyDown(Key.A)) izquierda += 300;
 
             base.OnUpdateFrame(e);
@@ -44,7 +44,6 @@ namespace Objetos_3D
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
 
-
             GL.Rotate(arriba, abajo, derecha, izquierda);
 
             Casa casa = new Casa(new Vector3(0, 0, 0), 100, 100, 50);
@@ -53,6 +52,8 @@ namespace Objetos_3D
             casa.dibujar();
             casa2.dibujar();
             casa3.dibujar();
+
+            GL.ObjectLabel(ObjectLabelIdentifier.Texture, 1, 10, "HOla mundo");
 
             /*GL.Begin(PrimitiveType.Triangles);
             GL.Color4(Color4.Black);
