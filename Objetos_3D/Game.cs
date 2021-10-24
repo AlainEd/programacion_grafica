@@ -1,20 +1,25 @@
-﻿using OpenTK;
+﻿using Newtonsoft.Json;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-
-
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Objetos_3D
 {
     class Game : GameWindow
     {
         int arriba = 0, abajo = 1, derecha = 1, izquierda = 0;
+        public static string path = @"C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\appsetings.json";
+        public static string jsonString;
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
-
+            
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -35,8 +40,10 @@ namespace Objetos_3D
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Ortho(-300, 300, -300, 300, -300, 300);
+            
             base.OnLoad(e);
         }
+
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -46,32 +53,63 @@ namespace Objetos_3D
 
             GL.Rotate(arriba, abajo, derecha, izquierda);
 
-            Casa casa = new Casa(new Vector3(0, 0, 0), 100, 100, 50);
-            Casa casa2 = new Casa(new Vector3(100, -100, 0), 200, 200, 100);
-            Casa casa3 = new Casa(new Vector3(-100, -100, 0), 100, 100, 50);
-            casa.dibujar();
-            casa2.dibujar();
-            casa3.dibujar();
+            /*List<List<double>> listaVert = new List<List<double>>();
+            listaVert.Insert(0, new List<double> { 0, 50, 0 });
+            listaVert.Insert(1, new List<double> { 0, 50, 100 });
+            listaVert.Insert(2, new List<double> { 0, 0, 100 });
+            listaVert.Insert(3, new List<double> { 0, 0, 0 });
 
-            GL.ObjectLabel(ObjectLabelIdentifier.Texture, 1, 10, "HOla mundo");
+            List<List<double>> listaVert2 = new List<List<double>>();
+            listaVert2.Insert(0, new List<double> { 50, 50, 0 });
+            listaVert2.Insert(1, new List<double> { 50, 50, 100 });
+            listaVert2.Insert(2, new List<double> { 50, 0, 100 });
+            listaVert2.Insert(3, new List<double> { 50, 0, 0 });
 
-            /*GL.Begin(PrimitiveType.Triangles);
-            GL.Color4(Color4.Black);
-            GL.Vertex2(-0.5, -0.5);
-            GL.Color4(Color4.Red);
-            GL.Vertex2(0.5, -0.5);
-            GL.Color4(Color4.White);
-            GL.Vertex2(0, 0.5);
-            GL.End();*/
+            Face faces = new Face(listaVert);
+            Face faces2 = new Face(listaVert2);
+
+            List<Face> listaFaces = new List<Face>();
+            listaFaces.Add(faces);
+            listaFaces.Add(faces2);
+
+            Objeto objeto = new Objeto(listaFaces);
+            List<Objeto> listaObj = new List<Objeto>();
+            listaObj.Add(objeto);
+
+            Escenario escenario = new Escenario(listaObj);
+
+            escenario.dibujar();
+
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            jsonString = System.Text.Json.JsonSerializer.Serialize(objeto, options);
+
+
+            Console.WriteLine(jsonString);*/
+
+            string jsonString = readFile();
+            Escenario obj = JsonConvert.DeserializeObject<Escenario>(jsonString);
+            obj.dibujar();
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);
         }
 
+ 
+        public static string readFile()
+        {
+            string objeto;
+            using (var reader = new StreamReader(path))
+            {
+                objeto = reader.ReadToEnd();
+            }
+            return objeto;
+        }
+
         protected override void OnResize(EventArgs e)
         {
-            
-            
+            Console.WriteLine(jsonString);
+
             base.OnResize(e);
         }
 
@@ -79,5 +117,7 @@ namespace Objetos_3D
         {
             base.OnUnload(e);
         }
+
+        
     }
 }
