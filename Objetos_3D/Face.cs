@@ -12,30 +12,42 @@ namespace Objetos_3D
     class Face
     {
 
-        public string nombre { get; set; }
-        public List<float> color { get; set; }
-        public List<List<double>> listVert { get; set; }
+        public Dictionary<string, float[]> ListaVert { get; set; }
+        public float[] Color { get; set; }
 
-        public Face(List<List<double>> listVert)
+        public Vector3d origenFace;
+        public float anchoFace;
+        public float altoFace;
+        public float largoFace;
+
+
+        public Face()
         {
-            this.listVert = listVert;
+
         }
 
-        public void dibujar(List<double> centroMasa)
+        public Face(Dictionary<string, float[]> listaVert, float[] color)
         {
+            this.ListaVert = listaVert;
+            this.Color = color;
+            this.origenFace = new Vector3d(0,0,0);
+            this.altoFace = this.anchoFace = this.largoFace = 1;
+        }
 
-            double x = centroMasa[0];
-            double y = centroMasa[1];
-            double z = centroMasa[2];
 
-            GL.Begin(PrimitiveType.LineLoop);
-            GL.Color3(color[0], color[1], color[2]);
-            foreach (List<double> vertices in listVert)
+        public void dibujar(float ancho, float alto, float largo, Vector3d origen)
+        {
+            GL.Begin(PrimitiveType.Polygon);
+            GL.Color3(Color[0], Color[1], Color[2]);
+            foreach (var vertices in ListaVert)
             {
-                GL.Vertex3(vertices[0] + x, vertices[1] + y, vertices[2] + z);
+                GL.Vertex3(vertices.Value[0] * ancho + origen.X,
+                           vertices.Value[1] * alto + origen.Y,
+                           vertices.Value[2] * largo + origen.Z);
             }
             GL.End();
         }
+
 
         /*private void techoDerecho(PrimitiveType primitiveType, Color4 color)
         {

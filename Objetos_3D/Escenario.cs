@@ -1,31 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 namespace Objetos_3D
 {
     class Escenario
     {
-        
-        public List<Objeto> listaObj { get; set; }
-        
+        public Dictionary<string, Objeto> ListaObj { get; set; }
 
-        public Escenario(List<Objeto> listaObj)
+        public Escenario()
         {
-            this.listaObj = listaObj;
+            this.ListaObj = new Dictionary<string, Objeto>();
         }
 
         public void dibujar()
         {
-            if (listaObj != null)
+            if (ListaObj != null)
             {
-                foreach (Objeto obj in listaObj)
+                foreach (var objeto in ListaObj)
                 {
-                    obj.dibujar();
+                    objeto.Value.dibujar();
                 }
             }
-            
         }
 
-        
+        public void agregarObjeto(string nombre, Objeto objeto)
+        {
+            this.ListaObj.Add(nombre, objeto);
+        }
+
+        public void eliminarObjeto(string nombre)
+        {
+            this.ListaObj.Remove(nombre);
+        }
+
+
     }
 }
