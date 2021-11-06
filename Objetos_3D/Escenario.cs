@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using System;
 using System.Collections.Generic;
 
 
@@ -6,7 +8,7 @@ namespace Objetos_3D
 {
     class Escenario
     {
-        public Dictionary<string, Objeto> ListaObj { get; set; }
+        public Dictionary<string, Objeto> ListaObj;
 
         public Escenario()
         {
@@ -17,10 +19,14 @@ namespace Objetos_3D
         {
             if (ListaObj != null)
             {
+                
                 foreach (var objeto in ListaObj)
                 {
+                    
                     objeto.Value.dibujar();
+                    
                 }
+                
             }
         }
 
@@ -34,6 +40,29 @@ namespace Objetos_3D
             this.ListaObj.Remove(nombre);
         }
 
+        public void rotacion(float grado, float x, float y, float z)
+        {
+            foreach (var obj in ListaObj)
+            {
+                obj.Value.rotar(grado, x, y, z);
+            }
+        }
+
+        public void traslacion(float x, float y, float z)
+        {
+            foreach (var obj in ListaObj)
+            {
+                obj.Value.trasladar(x, y, z);
+            }
+        }
+
+        public void escalacion(float x, float y, float z)
+        {
+            foreach (var obj in ListaObj)
+            {
+                obj.Value.escalar(x, y, z);
+            }
+        }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace Objetos_3D
 {
     class Objeto
     {
-        public Dictionary<string, Face> ListaFaces { get; set; }
+        public Dictionary<string, Face> ListaFaces;
         public Vector3d origenObjeto;
         public float anchoObjeto;
         public float altoObjeto;
@@ -16,14 +17,15 @@ namespace Objetos_3D
 
         public Objeto()
         {
-
+            this.ListaFaces = new Dictionary<string, Face>();
+            this.origenObjeto = new Vector3d(0, 0, 0);
+            this.altoObjeto = this.anchoObjeto = this.largoObjeto = 1;
         }
 
         public Objeto(string name, Face objeto)
         {
             this.ListaFaces = new Dictionary<string, Face>();
-            ListaFaces.Add(name, objeto);
-            
+            ListaFaces.Add(name, objeto);   
         }
 
         public Objeto(Dictionary<string, Face> listaFaces)
@@ -35,10 +37,14 @@ namespace Objetos_3D
 
         public void dibujar()
         {
+            
             foreach (KeyValuePair<string, Face> faces in ListaFaces)
             {
+                
                 faces.Value.dibujar(anchoObjeto, altoObjeto, largoObjeto, origenObjeto);
+                
             }
+       
         }
 
         public void agregarFace(string nombre, Face face)
@@ -62,6 +68,30 @@ namespace Objetos_3D
         public void establecerOrigen(Vector3d origen)
         {
             this.origenObjeto = origen;
+        }
+
+        public void rotar(float grado, float x, float y, float z)
+        {
+            foreach (var cara in ListaFaces)
+            {
+                cara.Value.rotar(grado, x, y, z);
+            }
+        }
+
+        public void trasladar(float x, float y, float z)
+        {
+            foreach (var cara in ListaFaces)
+            {
+                cara.Value.trasladar(x, y, z);
+            }
+        }
+
+        public void escalar(float x, float y, float z)
+        {
+            foreach (var cara in ListaFaces)
+            {
+                cara.Value.escalar(x, y, z);
+            }
         }
 
     }

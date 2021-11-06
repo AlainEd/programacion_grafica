@@ -4,89 +4,20 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+
 
 
 namespace Objetos_3D
 {
     class Game : GameWindow
     {
-        int arriba = 0, abajo = 1, derecha = 1, izquierda = 0;
+        int arriba = 0, abajo = 0, derecha = 0, izquierda = 0;
         Escenario escenario;
+        int n = 0;
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
-            string des = File.ReadAllText("Casa.json");
-            var obj = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj2 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj3 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj4 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj5 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj6 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj7 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj8 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj9 = JsonConvert.DeserializeObject<Objeto>(des);
-            var obj10 = JsonConvert.DeserializeObject<Objeto>(des);
-
-            string des2 = File.ReadAllText("Camino.json");
-            var camino = JsonConvert.DeserializeObject<Objeto>(des2);
-            var camino2 = JsonConvert.DeserializeObject<Objeto>(des2);
-            var camino3 = JsonConvert.DeserializeObject<Objeto>(des2);
-            var camino4 = JsonConvert.DeserializeObject<Objeto>(des2);
-
-            obj.dimensionarObjeto(5, 5, 7);
-            obj2.dimensionarObjeto(5, 5, 7);
-            obj3.dimensionarObjeto(5, 5, 7);
-            obj4.dimensionarObjeto(5, 5, 7);
-            obj5.dimensionarObjeto(5, 5, 7);
-            obj6.dimensionarObjeto(5, 5, 7);
-            obj7.dimensionarObjeto(5, 5, 7);
-            obj8.dimensionarObjeto(5, 5, 7);
-            obj9.dimensionarObjeto(5, 5, 7);
-            obj10.dimensionarObjeto(5, 5, 7);
-
-            camino.dimensionarObjeto(5, 5, 7);
-            camino2.dimensionarObjeto(5, 5, 7);
-            camino3.dimensionarObjeto(5, 5, 7);
-            camino4.dimensionarObjeto(5, 5, 7);
-
-
-            obj2.establecerOrigen(new Vector3d(100,0,0));
-            obj3.establecerOrigen(new Vector3d(-100, 0, 0));
-            obj4.establecerOrigen(new Vector3d(200, 0, 0));
-            obj5.establecerOrigen(new Vector3d(-200, 0, 0));
-
-            obj6.establecerOrigen(new Vector3d(0, 0, 200));
-            obj7.establecerOrigen(new Vector3d(100, 0, 200));
-            obj8.establecerOrigen(new Vector3d(-100, 0, 200));
-            obj9.establecerOrigen(new Vector3d(200, 0, 200));
-            obj10.establecerOrigen(new Vector3d(-200, 0, 200));
-
-
-            camino.establecerOrigen(new Vector3d(0, 0, 100));
-            camino2.establecerOrigen(new Vector3d(50, 0, 100));
-            camino3.establecerOrigen(new Vector3d(100, 0, 100));
-            camino4.establecerOrigen(new Vector3d(150, 0, 100));
-
-            escenario = new Escenario();
-            escenario.agregarObjeto("casa", obj);
-            escenario.agregarObjeto("casa2", obj2);
-            escenario.agregarObjeto("casa3", obj3);
-            escenario.agregarObjeto("casa4", obj4);
-            escenario.agregarObjeto("casa5", obj5);
-            escenario.agregarObjeto("casa6", obj6);
-            escenario.agregarObjeto("casa7", obj7);
-            escenario.agregarObjeto("casa8", obj8);
-            escenario.agregarObjeto("casa9", obj9);
-            escenario.agregarObjeto("casa10", obj10);
-
-            escenario.agregarObjeto("camino", camino);
-            escenario.agregarObjeto("camino2", camino2);
-            escenario.agregarObjeto("camino3", camino3);
-            escenario.agregarObjeto("camino4", camino4);
+            
 
         }
 
@@ -94,10 +25,10 @@ namespace Objetos_3D
         {
             KeyboardState input = Keyboard.GetState();
 
-            if (input.IsKeyDown(Key.W)) arriba++;
-            else if (input.IsKeyDown(Key.S)) abajo += 300;
-            else if (input.IsKeyDown(Key.D)) derecha += 300;
-            else if (input.IsKeyDown(Key.A)) izquierda += 300;
+            if (input.IsKeyDown(Key.W)) arriba += 10;
+            else if (input.IsKeyDown(Key.S)) abajo += 10;
+            else if (input.IsKeyDown(Key.D)) derecha += 10;
+            else if (input.IsKeyDown(Key.A)) izquierda += 10;
 
             base.OnUpdateFrame(e);
         }
@@ -106,13 +37,31 @@ namespace Objetos_3D
         {
             GL.ClearColor(Color4.Black);
             GL.MatrixMode(MatrixMode.Projection);
-            //GL.LoadIdentity();
+            GL.LoadIdentity();
             GL.Ortho(-300, 300, -300, 300, -300, 300);
+
+            Objeto casa = JsonToObjeto("Casa.json");
+            Objeto casa2 = JsonToObjeto("Casa.json");
+
+            casa2.establecerOrigen(new Vector3d(200, 0, 0));
+
+            escenario = new Escenario();
+            escenario.agregarObjeto("casa", casa);
+            escenario.agregarObjeto("casa2", casa2);
             
+
+
+
             base.OnLoad(e);
         }
 
+        public Objeto JsonToObjeto(string archivo)
+        {
+            archivo = File.ReadAllText(archivo);
+            return JsonConvert.DeserializeObject<Objeto>(archivo);
+        }
 
+        float x = 0.5f;
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -120,7 +69,12 @@ namespace Objetos_3D
             GL.LoadIdentity();
             GL.Rotate(arriba, abajo, derecha, izquierda);
 
+            
+            escenario.rotacion(x, 0, 1, 0);
+            //escenario.traslacion(10, 0, 0);
             escenario.dibujar();
+            x += 0.5f;
+
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);

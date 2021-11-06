@@ -12,8 +12,8 @@ namespace Objetos_3D
     class Face
     {
 
-        public Dictionary<string, float[]> ListaVert { get; set; }
-        public float[] Color { get; set; }
+        public Dictionary<string, float[]> ListaVert;
+        public float[] Color;
 
         public Vector3d origenFace;
         public float anchoFace;
@@ -23,14 +23,14 @@ namespace Objetos_3D
 
         public Face()
         {
-
+            
         }
 
         public Face(Dictionary<string, float[]> listaVert, float[] color)
         {
             this.ListaVert = listaVert;
             this.Color = color;
-            this.origenFace = new Vector3d(0,0,0);
+            this.origenFace = new Vector3d(0, 0, 0);
             this.altoFace = this.anchoFace = this.largoFace = 1;
         }
 
@@ -48,6 +48,22 @@ namespace Objetos_3D
             GL.End();
         }
 
+        public void rotar(float grado, float x, float y, float z)
+        {
+            //GL.PushMatrix();
+            GL.Rotate(grado, x, y, z);
+            //GL.PopMatrix();
+        }
+
+        public void trasladar(float x, float y, float z)
+        {
+            GL.Translate(x, y, z);
+        }
+
+        public void escalar(float x, float y, float z)
+        {
+            GL.Scale(x, y, z);
+        }
 
         /*private void techoDerecho(PrimitiveType primitiveType, Color4 color)
         {
