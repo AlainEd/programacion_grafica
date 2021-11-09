@@ -10,16 +10,16 @@ namespace Objetos_3D
     {
         public Dictionary<string, Face> ListaFaces;
         public Vector3d origenObjeto;
-        public float anchoObjeto;
-        public float altoObjeto;
-        public float largoObjeto;
-
+        //public float anchoObjeto;
+        //public float altoObjeto;
+        //public float largoObjeto;
+        //public Transformaciones MTr;
 
         public Objeto()
         {
             this.ListaFaces = new Dictionary<string, Face>();
             this.origenObjeto = new Vector3d(0, 0, 0);
-            this.altoObjeto = this.anchoObjeto = this.largoObjeto = 1;
+            //this.altoObjeto = this.anchoObjeto = this.largoObjeto = 1;
         }
 
         public Objeto(string name, Face objeto)
@@ -32,19 +32,14 @@ namespace Objetos_3D
         {
             this.ListaFaces = listaFaces;
             this.origenObjeto = new Vector3d(0, 0, 0);
-            this.altoObjeto = this.anchoObjeto = this.largoObjeto = 1;
+            //this.altoObjeto = this.anchoObjeto = this.largoObjeto = 1;
         }
 
         public void dibujar()
         {
             
             foreach (KeyValuePair<string, Face> faces in ListaFaces)
-            {
-                
-                faces.Value.dibujar(anchoObjeto, altoObjeto, largoObjeto, origenObjeto);
-                
-            }
-       
+                faces.Value.dibujar(/*anchoObjeto, altoObjeto, largoObjeto,*/ origenObjeto);
         }
 
         public void agregarFace(string nombre, Face face)
@@ -52,47 +47,63 @@ namespace Objetos_3D
             ListaFaces.Add(nombre, face);
         }
 
-
         public void eliminarFace(string nombre)
         {
             this.ListaFaces.Remove(nombre);
         }
 
-        public void dimensionarObjeto(float ancho, float alto, float largo)
+        public Face getFace(string nombre)
         {
-            this.anchoObjeto = ancho;
-            this.altoObjeto = alto;
-            this.largoObjeto = largo;
+            foreach (var face in ListaFaces)
+            {
+                if (face.Key == nombre)
+                    return face.Value;
+            }
+            return null;
         }
 
-        public void establecerOrigen(Vector3d origen)
+        //public void dimensionarObjeto(float ancho, float alto, float largo)
+        //{
+        //    this.anchoObjeto = ancho;
+        //    this.altoObjeto = alto;
+        //    this.largoObjeto = largo;
+        //}
+
+        public void establecerorigen(Vector3d origen)
         {
             this.origenObjeto = origen;
         }
 
-        public void rotar(float grado, float x, float y, float z)
+        public void rotar(int angulo, Vector3d eje)
         {
-            foreach (var cara in ListaFaces)
+            foreach (var face in ListaFaces)
             {
-                cara.Value.rotar(grado, x, y, z);
+                face.Value.rotar(angulo, eje);
             }
         }
 
-        public void trasladar(float x, float y, float z)
+        public void trasladar(Vector3d centro)
         {
-            foreach (var cara in ListaFaces)
+            foreach (var face in ListaFaces)
             {
-                cara.Value.trasladar(x, y, z);
+                face.Value.trasladar(centro);
             }
         }
 
-        public void escalar(float x, float y, float z)
+        public void escalar(Vector3d dim)
         {
-            foreach (var cara in ListaFaces)
+            foreach (var face in ListaFaces)
             {
-                cara.Value.escalar(x, y, z);
+                face.Value.escalar(dim);
             }
         }
 
+        public void escalar(float dim)
+        {
+            foreach (var face in ListaFaces)
+            {
+                face.Value.escalar(dim);
+            }
+        }
     }
 }

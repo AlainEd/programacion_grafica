@@ -40,16 +40,14 @@ namespace Objetos_3D
             GL.LoadIdentity();
             GL.Ortho(-300, 300, -300, 300, -300, 300);
 
-            Objeto casa = JsonToObjeto("Casa.json");
-            Objeto casa2 = JsonToObjeto("Casa.json");
-
-            casa2.establecerOrigen(new Vector3d(200, 0, 0));
+            //Matriz M = new Matriz();
+            //M.rotacionX(20);
+            //M.printMatriz();
 
             escenario = new Escenario();
-            escenario.agregarObjeto("casa", casa);
-            escenario.agregarObjeto("casa2", casa2);
+            escenario.agregarObjeto("casa1", "Casa.json");
+            escenario.agregarObjeto("casa2", "Casa.json");
             
-
 
 
             base.OnLoad(e);
@@ -61,7 +59,7 @@ namespace Objetos_3D
             return JsonConvert.DeserializeObject<Objeto>(archivo);
         }
 
-        float x = 0.5f;
+        int x = 200;
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -69,12 +67,20 @@ namespace Objetos_3D
             GL.LoadIdentity();
             GL.Rotate(arriba, abajo, derecha, izquierda);
 
-            
-            escenario.rotacion(x, 0, 1, 0);
-            //escenario.traslacion(10, 0, 0);
-            escenario.dibujar();
-            x += 0.5f;
+            Objeto obj = escenario.getObjeto("casa1");
+            Objeto obj2 = escenario.getObjeto("casa2");
+            obj.establecerorigen(new Vector3d(200, 0, 0));
+            //Objeto obj2 = escenario.getObjeto("casa2");
 
+            //obj.trasladar(new Vector3d(x, 0, 0));
+
+            obj.rotar(1, new Vector3d(0, 0, 1));
+            obj2.rotar(-1, new Vector3d(0, 0, 1));
+            //obj2.rotar(1, new Vector3d(0, 0, 1));
+
+            escenario.dibujar();
+
+            x = 0; 
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);

@@ -15,6 +15,8 @@ namespace Objetos_3D
                 game.Run(60.0);
             }
 
+            
+
         }
     }
 }

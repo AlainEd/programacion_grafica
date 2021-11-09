@@ -1,8 +1,9 @@
-﻿using OpenTK;
+﻿using Newtonsoft.Json;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
 
 namespace Objetos_3D
 {
@@ -17,17 +18,9 @@ namespace Objetos_3D
 
         public void dibujar()
         {
-            if (ListaObj != null)
-            {
-                
-                foreach (var objeto in ListaObj)
-                {
-                    
-                    objeto.Value.dibujar();
-                    
-                }
-                
-            }
+            if (ListaObj != null)          
+                foreach (var objeto in ListaObj)      
+                    objeto.Value.dibujar();                  
         }
 
         public void agregarObjeto(string nombre, Objeto objeto)
@@ -35,33 +28,29 @@ namespace Objetos_3D
             this.ListaObj.Add(nombre, objeto);
         }
 
+        public void agregarObjeto(string nombre, string archivo)
+        {
+            this.ListaObj.Add(nombre, JsonToObjeto(archivo));
+        }
+
         public void eliminarObjeto(string nombre)
         {
             this.ListaObj.Remove(nombre);
         }
-
-        public void rotacion(float grado, float x, float y, float z)
+        public Objeto getObjeto(string nombre)
         {
             foreach (var obj in ListaObj)
             {
-                obj.Value.rotar(grado, x, y, z);
+                if (obj.Key == nombre)
+                    return obj.Value;
             }
+            return null;
         }
 
-        public void traslacion(float x, float y, float z)
+        private Objeto JsonToObjeto(string archivo)
         {
-            foreach (var obj in ListaObj)
-            {
-                obj.Value.trasladar(x, y, z);
-            }
-        }
-
-        public void escalacion(float x, float y, float z)
-        {
-            foreach (var obj in ListaObj)
-            {
-                obj.Value.escalar(x, y, z);
-            }
+            archivo = File.ReadAllText(archivo);
+            return JsonConvert.DeserializeObject<Objeto>(archivo);
         }
 
     }

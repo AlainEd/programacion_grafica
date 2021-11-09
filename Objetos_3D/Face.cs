@@ -12,13 +12,13 @@ namespace Objetos_3D
     class Face
     {
 
-        public Dictionary<string, float[]> ListaVert;
+        public Dictionary<string, float[]> ListaVert { get; set; }
         public float[] Color;
 
         public Vector3d origenFace;
-        public float anchoFace;
-        public float altoFace;
-        public float largoFace;
+        //public double anchoFace;
+        //public double altoFace;
+        //public double largoFace;
 
 
         public Face()
@@ -31,38 +31,130 @@ namespace Objetos_3D
             this.ListaVert = listaVert;
             this.Color = color;
             this.origenFace = new Vector3d(0, 0, 0);
-            this.altoFace = this.anchoFace = this.largoFace = 1;
+            //this.altoFace = this.anchoFace = this.largoFace = 1;
         }
 
 
-        public void dibujar(float ancho, float alto, float largo, Vector3d origen)
+
+        public float[] getVertice(string nombre)
+        {
+            foreach (var vert in ListaVert)
+            {
+                if (vert.Key == nombre)
+                    return vert.Value;
+            }
+            return null;
+        }
+
+        public void setVertice(string nombre, float[] vertice)
+        {
+            foreach (var vert in ListaVert)
+            {
+                if (vert.Key == nombre)
+                {
+                    for (int i = 0; i < vertice.Length; i++)
+                    {
+                        vert.Value.SetValue(vertice[i], i);
+                    }
+                }
+            }
+        }
+
+        public void dibujar(/*float ancho, float alto, float largo, */Vector3d origen)
         {
             GL.Begin(PrimitiveType.Polygon);
             GL.Color3(Color[0], Color[1], Color[2]);
             foreach (var vertices in ListaVert)
             {
-                GL.Vertex3(vertices.Value[0] * ancho + origen.X,
-                           vertices.Value[1] * alto + origen.Y,
-                           vertices.Value[2] * largo + origen.Z);
+                GL.Vertex3(vertices.Value[0] + origen.X, //* ancho + origen.X,
+                           vertices.Value[1] + origen.Y, //* alto + origen.Y,
+                           vertices.Value[2] + origen.Z); //* largo + origen.Z);
             }
             GL.End();
         }
 
-        public void rotar(float grado, float x, float y, float z)
+        public void rotar(int angulo, Vector3d eje)
         {
-            //GL.PushMatrix();
-            GL.Rotate(grado, x, y, z);
-            //GL.PopMatrix();
+            Matriz Rx = new Matriz();
+            Matriz Pp = new Matriz();
+
+            if (eje.X == 1)
+                Rx.rotacionX(angulo);
+            if (eje.Y == 1)
+                Rx.rotacionY(angulo);
+            if (eje.Z == 1)
+                Rx.rotacionZ(angulo);
+
+            foreach (var vert in ListaVert)
+            {
+                Matriz P = new Matriz(vert.Value);
+                Pp = new Matriz(P.nroFil, Rx.nroCol);
+                Pp = Pp.multiplicarMatrices(P, Rx);
+                float[] vertices = new float[3];
+                for (int i = 0; i < Rx.nroCol - 1; i++)
+                {
+                    vertices[i] = (float)Pp.getCelda(0, i);
+                }
+                setVertice(vert.Key, vertices);
+            }
+
         }
 
-        public void trasladar(float x, float y, float z)
+        public void trasladar(Vector3d centro)
         {
-            GL.Translate(x, y, z);
+            Matriz Pp = new Matriz();
+            Matriz T = new Matriz();
+            T.traslacion(centro.X, centro.Y, centro.Z);
+            foreach (var vert in ListaVert)
+            {
+                Matriz P = new Matriz(vert.Value);
+                Pp = new Matriz(P.nroFil, T.nroCol);
+                Pp = Pp.multiplicarMatrices(P, T);
+                float[] vertices = new float[3];
+                for (int i = 0; i < T.nroCol - 1; i++)
+                {
+                    vertices[i] = (float)Pp.getCelda(0, i);
+                }
+                setVertice(vert.Key, vertices);
+            }
         }
 
-        public void escalar(float x, float y, float z)
+        public void escalar(Vector3d dim)
         {
-            GL.Scale(x, y, z);
+            Matriz Pp = new Matriz();
+            Matriz S = new Matriz();
+            S.escalacion(dim.X, dim.Y, dim.Z);
+            foreach (var vert in ListaVert)
+            {
+                Matriz P = new Matriz(vert.Value);
+                Pp = new Matriz(P.nroFil, S.nroCol);
+                Pp = Pp.multiplicarMatrices(P, S);
+                float[] vertices = new float[3];
+                for (int i = 0; i < S.nroCol - 1; i++)
+                {
+                    vertices[i] = (float)Pp.getCelda(0, i);
+                }
+                setVertice(vert.Key, vertices);
+            }
+        }
+
+        public void escalar(float dim)
+        {
+            Matriz Pp = new Matriz();
+            Matriz S = new Matriz();
+            S.escalacion(dim, dim, dim);
+            foreach (var vert in ListaVert)
+            {
+                Matriz P = new Matriz(vert.Value);
+                Pp = new Matriz(P.nroFil, S.nroCol);
+                Pp = Pp.multiplicarMatrices(P, S);
+                float[] vertices = new float[3];
+                for (int i = 0; i < S.nroCol - 1; i++)
+                {
+                    vertices[i] = (float)Pp.getCelda(0, i);
+                }
+                setVertice(vert.Key, vertices);
+            }
         }
 
         /*private void techoDerecho(PrimitiveType primitiveType, Color4 color)
