@@ -9,7 +9,7 @@ namespace Objetos_3D
 {
     class Escenario
     {
-        public Dictionary<string, Objeto> ListaObj;
+        public Dictionary<string, Objeto> ListaObj { get; set; }
 
         public Escenario()
         {

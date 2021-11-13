@@ -64,6 +64,8 @@ namespace Objetos_3D
 
         public void setCelda(int i, int j, double elem)
         {
+            if (i < 0 | i >= nroFil | j < 0 | j >= nroCol)
+                throw new Exception("Error: Index fuera de rango");
             matriz[i, j] = elem;
         }
 

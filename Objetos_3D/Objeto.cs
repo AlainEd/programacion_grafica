@@ -8,18 +8,13 @@ namespace Objetos_3D
 {
     class Objeto
     {
-        public Dictionary<string, Face> ListaFaces;
-        public Vector3d origenObjeto;
-        //public float anchoObjeto;
-        //public float altoObjeto;
-        //public float largoObjeto;
-        //public Transformaciones MTr;
+        public Dictionary<string, Face> ListaFaces { get; set; }
+        public float[] origenObjeto;
 
         public Objeto()
         {
             this.ListaFaces = new Dictionary<string, Face>();
-            this.origenObjeto = new Vector3d(0, 0, 0);
-            //this.altoObjeto = this.anchoObjeto = this.largoObjeto = 1;
+            this.origenObjeto = new float[3] { 0, 0, 0 };
         }
 
         public Objeto(string name, Face objeto)
@@ -31,15 +26,13 @@ namespace Objetos_3D
         public Objeto(Dictionary<string, Face> listaFaces)
         {
             this.ListaFaces = listaFaces;
-            this.origenObjeto = new Vector3d(0, 0, 0);
-            //this.altoObjeto = this.anchoObjeto = this.largoObjeto = 1;
+            this.origenObjeto = new float[3] { 0, 0, 0 };
         }
 
         public void dibujar()
         {
-            
             foreach (KeyValuePair<string, Face> faces in ListaFaces)
-                faces.Value.dibujar(/*anchoObjeto, altoObjeto, largoObjeto,*/ origenObjeto);
+                faces.Value.dibujar(origenObjeto);
         }
 
         public void agregarFace(string nombre, Face face)
@@ -62,14 +55,7 @@ namespace Objetos_3D
             return null;
         }
 
-        //public void dimensionarObjeto(float ancho, float alto, float largo)
-        //{
-        //    this.anchoObjeto = ancho;
-        //    this.altoObjeto = alto;
-        //    this.largoObjeto = largo;
-        //}
-
-        public void establecerorigen(Vector3d origen)
+        public void establecerorigen(float[] origen)
         {
             this.origenObjeto = origen;
         }
@@ -84,6 +70,7 @@ namespace Objetos_3D
 
         public void trasladar(Vector3d centro)
         {
+            
             foreach (var face in ListaFaces)
             {
                 face.Value.trasladar(centro);

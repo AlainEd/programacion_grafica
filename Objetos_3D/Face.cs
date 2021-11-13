@@ -16,9 +16,6 @@ namespace Objetos_3D
         public float[] Color;
 
         public Vector3d origenFace;
-        //public double anchoFace;
-        //public double altoFace;
-        //public double largoFace;
 
 
         public Face()
@@ -31,10 +28,7 @@ namespace Objetos_3D
             this.ListaVert = listaVert;
             this.Color = color;
             this.origenFace = new Vector3d(0, 0, 0);
-            //this.altoFace = this.anchoFace = this.largoFace = 1;
         }
-
-
 
         public float[] getVertice(string nombre)
         {
@@ -60,15 +54,20 @@ namespace Objetos_3D
             }
         }
 
-        public void dibujar(/*float ancho, float alto, float largo, */Vector3d origen)
+        public void setOrigen(Vector3d origen)
+        {
+            this.origenFace = origen;
+        }
+
+        public void dibujar(float[] origen)
         {
             GL.Begin(PrimitiveType.Polygon);
             GL.Color3(Color[0], Color[1], Color[2]);
             foreach (var vertices in ListaVert)
             {
-                GL.Vertex3(vertices.Value[0] + origen.X, //* ancho + origen.X,
-                           vertices.Value[1] + origen.Y, //* alto + origen.Y,
-                           vertices.Value[2] + origen.Z); //* largo + origen.Z);
+                GL.Vertex3(vertices.Value[0] + origen[0],
+                           vertices.Value[1] + origen[1],
+                           vertices.Value[2] + origen[2]);
             }
             GL.End();
         }
@@ -119,6 +118,7 @@ namespace Objetos_3D
             }
         }
 
+        //escalar en las 3 dimensiones
         public void escalar(Vector3d dim)
         {
             Matriz Pp = new Matriz();
@@ -138,6 +138,7 @@ namespace Objetos_3D
             }
         }
 
+        //escalar en porcentaje
         public void escalar(float dim)
         {
             Matriz Pp = new Matriz();
