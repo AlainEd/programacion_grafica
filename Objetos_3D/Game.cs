@@ -15,13 +15,9 @@ namespace Objetos_3D
     {
         int arriba = 0, abajo = 0, derecha = 0, izquierda = 0;
         Escenario escenario;
-
-
-
-        public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
+        public Game(int width, int height, string title, Escenario escenario) : base(width, height, GraphicsMode.Default, title)
         {
-            
-
+            this.escenario = escenario;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -44,24 +40,24 @@ namespace Objetos_3D
             GL.LoadIdentity();
             GL.Ortho(-300, 300, -300, 300, -300, 300);
 
-       
+            //codigo para demostracion de las transformaciones
+            escenario.agregarObjeto("Casa", "Casa.json");
+            escenario.agregarObjeto("Casa1", "Casa.json");
+            escenario.agregarObjeto("Casa2", "Casa.json");
 
-            escenario = new Escenario();
-            escenario.agregarObjeto("casa1", "Casa.json");
-            escenario.agregarObjeto("casa2", "Casa.json");
-            Objeto obj = escenario.getObjeto("casa1");
-            obj.establecerorigen(new float[3] { 120, 0, 0 });
-            obj.escalar(0.5f);
+            Objeto obj = escenario.getObjeto("Casa");
+            obj.trasladar(new Vector3d(150, 0, 0));
 
+            Objeto obj2 = escenario.getObjeto("Casa1");
+            obj2.trasladar(new Vector3d(0, -220, 0));
 
             base.OnLoad(e);
         }
 
-        int x = 120;
+        int x = 1;
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
@@ -69,11 +65,19 @@ namespace Objetos_3D
             GL.Enable(EnableCap.ColorMaterial);
             GL.Rotate(arriba, abajo, derecha, izquierda);
 
-            Objeto obj = escenario.getObjeto("casa2");
-            obj.rotar(1, new Vector3d(0, 1, 0));
+            //rotacion en x
+            Objeto obj = escenario.getObjeto("Casa");
+            obj.rotar(1, new Vector3d(1, 0, 0));
+
+            //rotacion en y
+            Objeto obj2 = escenario.getObjeto("Casa1");
+            obj2.rotar(1, new Vector3d(0, 1, 0));
+
+            //rotacion en z
+            Objeto obj3 = escenario.getObjeto("Casa2");
+            obj3.rotar(1, new Vector3d(0, 0, 1));
 
             escenario.dibujar();
-            x = 0;
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);

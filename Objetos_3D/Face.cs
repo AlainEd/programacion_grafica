@@ -13,21 +13,21 @@ namespace Objetos_3D
     {
 
         public Dictionary<string, float[]> ListaVert { get; set; }
-        public float[] Color;
+        public float[] Color { get; set; }
 
-        public Vector3d origenFace;
+        public float[] origenFace { get; set; }
 
 
         public Face()
         {
-            
+
         }
 
         public Face(Dictionary<string, float[]> listaVert, float[] color)
         {
             this.ListaVert = listaVert;
             this.Color = color;
-            this.origenFace = new Vector3d(0, 0, 0);
+            this.origenFace = new float[] { 0, 0, 0 };
         }
 
         public float[] getVertice(string nombre)
@@ -54,25 +54,25 @@ namespace Objetos_3D
             }
         }
 
-        public void setOrigen(Vector3d origen)
+        public void setOrigen(float[] origen)
         {
             this.origenFace = origen;
         }
 
-        public void dibujar(float[] origen)
+        public void dibujar()
         {
             GL.Begin(PrimitiveType.Polygon);
             GL.Color3(Color[0], Color[1], Color[2]);
             foreach (var vertices in ListaVert)
             {
-                GL.Vertex3(vertices.Value[0] + origen[0],
-                           vertices.Value[1] + origen[1],
-                           vertices.Value[2] + origen[2]);
+                GL.Vertex3(vertices.Value[0] + origenFace[0],
+                           vertices.Value[1] + origenFace[1],
+                           vertices.Value[2] + origenFace[2]);
             }
             GL.End();
         }
 
-        public void rotar(int angulo, Vector3d eje)
+        public void rotar(float angulo, Vector3d eje)
         {
             Matriz Rx = new Matriz();
             Matriz Pp = new Matriz();
@@ -157,117 +157,5 @@ namespace Objetos_3D
                 setVertice(vert.Key, vertices);
             }
         }
-
-        /*private void techoDerecho(PrimitiveType primitiveType, Color4 color)
-        {
-            GL.Begin(primitiveType);
-            GL.Color4(color);
-
-            GL.Vertex3(centro.X - ancho / 2, centro.Y + alto / 2.5, centro.Z - largo);
-            GL.Vertex3(centro.X, centro.Y, centro.Z - largo);
-            GL.Vertex3(centro.X, centro.Y, centro.Z);
-            GL.Vertex3(centro.X - ancho / 2, centro.Y + alto / 2.5, centro.Z);
-            GL.End();
-        }
-
-        private void techoIzquierdo(PrimitiveType primitiveType, Color4 color)
-        {
-            GL.Begin(primitiveType);
-            GL.Color4(color);
-            GL.Vertex3(centro.X - ancho / 2, centro.Y + alto / 2.5, centro.Z);
-            GL.Vertex3(centro.X - ancho, centro.Y, centro.Z);
-            GL.Vertex3(centro.X - ancho, centro.Y, centro.Z - largo);
-            GL.Vertex3(centro.X - ancho / 2, centro.Y + alto / 2.5, centro.Z - largo);
-            GL.End();
-        }
-
-        private void paredDerecha(PrimitiveType primitiveType, Color4 color, bool ventana)
-        {
-
-            GL.Begin(primitiveType);
-            GL.Color4(color);
-            GL.Vertex3(centro.X, centro.Y, centro.Z - largo);
-            GL.Vertex3(centro.X, centro.Y - (alto / 2.5) * 2, centro.Z - largo);
-            GL.Vertex3(centro.X, centro.Y - (alto / 2.5) * 2, centro.Z);
-            GL.Vertex3(centro.X, centro.Y, centro.Z);
-            GL.End();
-
-            if (ventana)
-            {
-                GL.Begin(primitiveType);
-                GL.Color4(Color4.Transparent);
-                GL.Vertex3(centro.X, centro.Y - alto / 4, centro.Z - largo / 4);
-                GL.Vertex3(centro.X, centro.Y - alto / 4, centro.Z - 3 * largo / 4);
-                GL.Vertex3(centro.X, centro.Y - alto / 1.8, centro.Z - 3 * largo / 4);
-                GL.Vertex3(centro.X, centro.Y - alto / 1.8, centro.Z - largo / 4);
-                GL.End();
-            }
-        }
-
-        private void paredIzquierda(PrimitiveType primitiveType, Color4 color, bool ventana)
-        {
-
-            GL.Begin(primitiveType);
-            GL.Color4(color);
-            GL.Vertex3(centro.X - ancho, centro.Y, centro.Z);
-            GL.Vertex3(centro.X - ancho, centro.Y - (alto / 2.5) * 2, centro.Z);
-            GL.Vertex3(centro.X - ancho, centro.Y - (alto / 2.5) * 2, centro.Z - largo);
-            GL.Vertex3(centro.X - ancho, centro.Y, centro.Z - largo);
-            GL.End();
-
-            if (ventana)
-            {
-                GL.Begin(primitiveType);
-                GL.Color4(Color4.Transparent);
-                GL.Vertex3(centro.X - ancho, centro.Y - alto / 4, centro.Z - largo / 4);
-                GL.Vertex3(centro.X - ancho, centro.Y - alto / 4, centro.Z - 3 * largo / 4);
-                GL.Vertex3(centro.X - ancho, centro.Y - alto / 1.8, centro.Z - 3 * largo / 4);
-                GL.Vertex3(centro.X - ancho, centro.Y - alto / 1.8, centro.Z - largo / 4);
-                GL.End();
-            }
-        }
-
-
-        private void paredDelantera(PrimitiveType primitiveType, Color4 color, bool puerta)
-        {
-
-            GL.Begin(primitiveType);
-            GL.Color4(color);
-            GL.Vertex3(centro.X, centro.Y, centro.Z);
-            GL.Vertex3(centro.X, centro.Y - (alto / 2.5) * 2, centro.Z);
-            if (puerta)
-            {
-                GL.Vertex3(centro.X - ancho / 4, centro.Y - 2 * alto / 2.5, centro.Z);
-                GL.Vertex3(centro.X - ancho / 4, centro.Y - alto / 4, centro.Z);
-                GL.Vertex3(centro.X - 3 * ancho / 4, centro.Y - (alto / 4), centro.Z);
-                GL.Vertex3(centro.X - 3 * ancho / 4, centro.Y - 2 * alto / 2.5, centro.Z);
-            }
-            GL.Vertex3(centro.X - ancho, centro.Y - (alto / 2.5) * 2, centro.Z);
-            GL.Vertex3(centro.X - ancho, centro.Y, centro.Z);
-            GL.Vertex3(centro.X - ancho / 2, centro.Y + alto / 2.5, centro.Z);
-            GL.End();
-
-        }
-
-        private void paredTrasera(PrimitiveType primitiveType, Color4 color, bool puerta)
-        {
-
-            GL.Begin(primitiveType);
-            GL.Color4(color);
-            GL.Vertex3(centro.X, centro.Y, centro.Z - largo);
-            GL.Vertex3(centro.X, centro.Y - (alto / 2.5) * 2, centro.Z - largo);
-            if (puerta)
-            {
-                GL.Vertex3(centro.X - ancho / 4, centro.Y - 2 * alto / 2.5, centro.Z - largo);
-                GL.Vertex3(centro.X - ancho / 4, centro.Y - alto / 4, centro.Z - largo);
-                GL.Vertex3(centro.X - 3 * ancho / 4, centro.Y - (alto / 4), centro.Z - largo);
-                GL.Vertex3(centro.X - 3 * ancho / 4, centro.Y - 2 * alto / 2.5, centro.Z - largo);
-            }
-            GL.Vertex3(centro.X - ancho, centro.Y - (alto / 2.5) * 2, centro.Z - largo);
-            GL.Vertex3(centro.X - ancho, centro.Y, centro.Z - largo);
-            GL.Vertex3(centro.X - ancho / 2, centro.Y + alto / 2.5, centro.Z - largo);
-            GL.End();
-
-        }*/
     }
 }

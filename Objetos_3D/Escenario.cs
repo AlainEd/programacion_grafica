@@ -30,7 +30,35 @@ namespace Objetos_3D
 
         public void agregarObjeto(string nombre, string archivo)
         {
-            this.ListaObj.Add(nombre, JsonToObjeto(archivo));
+            int i = 1;
+            string n = nombre;
+            while (existeLlave(n))
+            {
+                n = nombre;
+                n += i;
+                i++;
+            }
+            this.ListaObj.Add(n, JsonToObjeto(archivo));
+        }
+
+        private bool existeLlave(string nombre)
+        {
+            foreach (var obj in ListaObj.Keys)
+            {
+                if (obj == nombre)
+                    return true;
+            }
+            return false;
+        }
+
+        public string getLastKey()
+        {
+            string key = "";
+            foreach (var obj in ListaObj.Keys)
+            {
+                key = obj;
+            }
+            return key;
         }
 
         public void eliminarObjeto(string nombre)
@@ -53,5 +81,37 @@ namespace Objetos_3D
             return JsonConvert.DeserializeObject<Objeto>(archivo);
         }
 
+        public void rotar(float angulo, Vector3d eje)
+        {
+            foreach (var face in ListaObj)
+            {
+                face.Value.rotar(angulo, eje);
+            }
+        }
+
+        public void trasladar(Vector3d centro)
+        {
+
+            foreach (var face in ListaObj)
+            {
+                face.Value.trasladar(centro);
+            }
+        }
+
+        public void escalar(Vector3d dim)
+        {
+            foreach (var face in ListaObj)
+            {
+                face.Value.escalar(dim);
+            }
+        }
+
+        public void escalar(float dim)
+        {
+            foreach (var face in ListaObj)
+            {
+                face.Value.escalar(dim);
+            }
+        }
     }
 }

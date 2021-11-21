@@ -9,7 +9,7 @@ namespace Objetos_3D
     class Objeto
     {
         public Dictionary<string, Face> ListaFaces { get; set; }
-        public float[] origenObjeto;
+        public float[] origenObjeto { get; set; }
 
         public Objeto()
         {
@@ -31,8 +31,8 @@ namespace Objetos_3D
 
         public void dibujar()
         {
-            foreach (KeyValuePair<string, Face> faces in ListaFaces)
-                faces.Value.dibujar(origenObjeto);
+            foreach (var faces in ListaFaces)
+                faces.Value.dibujar();
         }
 
         public void agregarFace(string nombre, Face face)
@@ -60,7 +60,7 @@ namespace Objetos_3D
             this.origenObjeto = origen;
         }
 
-        public void rotar(int angulo, Vector3d eje)
+        public void rotar(float angulo, Vector3d eje)
         {
             foreach (var face in ListaFaces)
             {
@@ -70,7 +70,7 @@ namespace Objetos_3D
 
         public void trasladar(Vector3d centro)
         {
-            
+
             foreach (var face in ListaFaces)
             {
                 face.Value.trasladar(centro);

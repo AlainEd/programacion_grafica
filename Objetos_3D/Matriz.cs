@@ -69,7 +69,7 @@ namespace Objetos_3D
             matriz[i, j] = elem;
         }
 
-        public void rotacionX(int angulo)
+        public void rotacionX(float angulo)
         {
             double angR = Math.PI * angulo / 180;
             matrizIdentidad();
@@ -79,7 +79,7 @@ namespace Objetos_3D
             matriz[2, 2] = Math.Cos(angR);
         }
 
-        public void rotacionY(int angulo)
+        public void rotacionY(float angulo)
         {
             double angR = Math.PI * angulo / 180;
             matrizIdentidad();
@@ -89,7 +89,7 @@ namespace Objetos_3D
             matriz[2, 2] = Math.Cos(angR);
         }
 
-        public void rotacionZ(int angulo)
+        public void rotacionZ(float angulo)
         {
             double angR = Math.PI * angulo / 180;
             matrizIdentidad();

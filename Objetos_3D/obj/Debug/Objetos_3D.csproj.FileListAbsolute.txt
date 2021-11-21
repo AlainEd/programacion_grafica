@@ -29,3 +29,5 @@ C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.csproj.Co
 C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.csproj.CopyComplete
 C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.exe
 C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.pdb
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.Form1.resources
+C:\Users\Edson\source\repos\Objetos_3D\Objetos_3D\obj\Debug\Objetos_3D.csproj.GenerateResource.cache
